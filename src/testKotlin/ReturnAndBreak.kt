@@ -71,14 +71,6 @@ class ReturnAndBreak {
         foo5()
         print("===foo5 ended===")
     }
-
-
-    /**
-     * Break and Continue
-     */
-    fun testBreak() {
-
-    }
 }
 
 
