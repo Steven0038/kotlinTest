@@ -100,18 +100,18 @@ class BasicCompute {
         }
     }
 
-    fun maxOf2(a: Int, b: Int) = if (a > b) a else b
+    private fun maxOf2(a: Int, b: Int) = if (a > b) a else b
 
     /**
      *  empty value and null handle
      */
-    fun parsInt(str: String): Int? { // ? means argument could be null
+    private fun parsInt(str: String): Int? { // ? means argument could be null
 //        return Integer.valueOf(str)
 //        return parseInt(str)
         return str.toIntOrNull()
     }
 
-    fun printProduct(arg1: String, arg2: String) {
+    private fun printProduct(arg1: String, arg2: String) {
         val x = parsInt(arg1)
         val y = parsInt(arg2)
 

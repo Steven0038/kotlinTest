@@ -1,8 +1,12 @@
 package testKotlin
 
 import org.junit.Test
-import java.lang.ArithmeticException
-import java.lang.IllegalStateException
+import java.math.BigDecimal
+import java.nio.file.Files
+import java.nio.file.Paths
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 
 class CustomUsage {
     /**
@@ -30,7 +34,7 @@ class CustomUsage {
      */
     @Test
     fun testFilter() {
-        var nums = listOf<Int>(0, 2, 3, 4)
+        var nums = listOf(0, 2, 3, 4)
         println(nums.filter { x -> x > 0 })
 
         println(nums.filter { it > 2 })
@@ -41,7 +45,7 @@ class CustomUsage {
      */
     @Test
     fun testIn() {
-        var emailList = listOf<String>("cat@gmail.com", "Dog@gmail.com")
+        var emailList = listOf("cat@gmail.com", "Dog@gmail.com")
         when {
             "cat@gmail.com" in emailList -> println("when yes")
             "cat@gmail.com" !in emailList -> println("when no")
@@ -85,7 +89,7 @@ class CustomUsage {
      */
     @Test
     fun testMap() {
-        var aMap = mapOf<Int, String>(0 to "Steven", 1 to "Sasa")
+        var aMap = mapOf(0 to "Steven", 1 to "Sasa")
         for ((k, v) in aMap) {
             println("Key is $k, Value is $v")
         }
@@ -220,7 +224,7 @@ class CustomUsage {
     @Test
     fun testWhenReturn() {
         fun transform(color: String): Int {
-            return when(color){
+            return when (color) {
                 "red" -> 0
                 "green" -> 1
                 "blue" -> 2
@@ -238,7 +242,7 @@ class CustomUsage {
     fun testTryCatch() {
         fun count(): Int {
             var c = 0
-            for(i in 1..10) {
+            for (i in 1..10) {
                 c++
             }
             return c
@@ -260,7 +264,7 @@ class CustomUsage {
     fun testIfExp() {
         val param = 1
         fun foo(param: Int) {
-            val result =  if (param == 1) {
+            val result = if (param == 1) {
                 "one"
             } else if (param == 2) {
                 "two"
@@ -279,6 +283,7 @@ class CustomUsage {
     fun testRetUnitBuilder() {
         val amo = arrayOfMinusOnes(10) // amo: {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     }
+
     private fun arrayOfMinusOnes(size: Int): IntArray {
         return IntArray(size).apply { fill(-1) }
     }
@@ -290,16 +295,103 @@ class CustomUsage {
     fun theAnswer2(): Int {
         return 42
     }
+
     @Test
     fun testSingleExpression() {
         var color = "red"
-        fun transform(color: String):Int  = when (color) {
+        fun transform(color: String): Int = when (color) {
             "red" -> 0
             "green" -> 1
             "yellow" -> 2
             else -> throw java.lang.IllegalArgumentException("Invalid color param value")
         }
-       print(transform(color))
+        print(transform(color))
     }
+
+    /**
+     *  call multiple function in a class (WITH)
+     */
+    @Test
+    fun testCallMultipleFunc() {
+        class Turtle {
+            fun penDown() {}
+            fun penUp() {}
+            fun turn(d: Double) {}
+            fun forward(d: Double) {}
+        }
+
+        val myTurtle = Turtle()
+        with(myTurtle) {
+            penDown()
+            for (i in 1..4) {
+                forward(100.0)
+                turn(90.0)
+            }
+        }
+    }
+
+    /**
+     *  apply
+     */
+    class Rectangle {
+        var length = 0
+        var breadth = 0
+        var color = ""
+    }
+
+    val myRectangle = Rectangle().apply {
+        length = 4
+        breadth = 5
+        color = "green"
+    }
+
+    @Test
+    fun testApply() {
+        print("Rectangle length is ${myRectangle.length}, breadth is ${myRectangle.breadth} color is ${myRectangle.color}")
+    }
+
+    /**
+     *  try with resources
+     */
+    @Test
+    fun testResources() {
+        val stream = Files.newInputStream(Paths.get("/some/file.txt"))
+        stream.buffered().reader().use { reader ->
+            println(reader.readText())
+        }
+    }
+
+    /**
+     *  Generic shortcut ???
+     */
+//    public final class Gson {
+//        public <T> T fromJson(JsonElement json, Class<T> classOfT) throw JsonSyntaxException {
+//
+//        }
+//    }
+//    inline fun <reified T: Any> Gson.fromJson(json: JsonElement): T = this.fromJson(json, T::class.java)
+
+    /**
+     *  variable exchanger ???
+     */
+//    var a = 1
+//    var b = 2
+//    a = b.also {b = a}
+
+    /**
+     *  TODO
+     */
+    fun calcTaxes(): BigDecimal = TODO("Waiting for feedback from accounting")
+
+    /**
+     * unchangeable constant
+     */
+    class Consts{
+        companion object {
+            const val MAX_COUNT = 8
+            const val USER_NAME_FILED = "UserName"
+        }
+    }
+
 
 }
